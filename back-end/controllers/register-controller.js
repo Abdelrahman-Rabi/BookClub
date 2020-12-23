@@ -5,9 +5,9 @@ const register = (req, res) => {
   let { username, email, password, phone } = req.body;
   const checkEmail = `SELECT email FROM users WHERE email LIKE '${email}'`;
   connection.query(checkEmail, email, (err, result) => {
-    console.log("RESULT : ", result);
     if (result.length !== 0) {
-      res.json(email + ` is already register.`);
+      // email is already registered in Database
+      res.json(false);
     } else {
       bcrypt.hash(password, Number(process.env.SALT), (err, hash) => {
         if (err) throw err;
@@ -19,7 +19,7 @@ const register = (req, res) => {
           if (err) {
             console.log("ERR : ", err);
           }
-          res.json(data);
+          res.json(true);
         });
       });
     }
