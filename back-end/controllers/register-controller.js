@@ -1,18 +1,28 @@
 const connection = require("../db");
 const bcrypt = require("bcrypt");
 
-const register = async (req, res) => {
-  const query = `INSERT INTO users (role_id,username,email,password,phone) 
-    VALUES (2, ?, ?,?, ?)`;
+const register = (req, res) => {
   let { username, email, password, phone } = req.body;
-  password = await bcrypt.hashSync(password, Number(process.env.SALT));
-  const data = [username, email, password, phone];
-  connection.query(query, data, (err, result) => {
-    if (err) {
+  const checkEmail = `SELECT email FROM users WHERE email LIKE '${email}'`;
+  connection.query(checkEmail, email, (err, result) => {
+    console.log("RESULT : ", result);
+    if (result.length !== 0) {
       res.json(email + ` is already register.`);
+    } else {
+      bcrypt.hash(password, Number(process.env.SALT), (err, hash) => {
+        if (err) throw err;
+        password = hash;
+        const query = `INSERT INTO users (username,email,password,phone) 
+        VALUES ( ?, ?,?, ?)`;
+        const data = [username, email, password, phone];
+        connection.query(query, data, (err, result) => {
+          if (err) {
+            console.log("ERR : ", err);
+          }
+          res.json(data);
+        });
+      });
     }
-
-    res.json(data);
   });
 };
 
