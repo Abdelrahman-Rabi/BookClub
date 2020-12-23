@@ -13,7 +13,6 @@ CREATE TABLE users (
     password VARCHAR(60) NOT NULL,
     phone VARCHAR(255)  NOT NULL,
     created_time TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_time TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, username),
     FOREIGN KEY (role_id) REFERENCES roles (role_id)
 );
