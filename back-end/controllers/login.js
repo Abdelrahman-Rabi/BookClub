@@ -3,22 +3,22 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const login = (req, res) => {
-  const query = `SELECT * FROM users WHERE email=? OR username=?`;
-
-  const { email, username, password } = req.body;
-  const data = [email, username, password];
+  const { user, password } = req.body;
+  const query = `SELECT * FROM users WHERE email='${user}' OR username='${user}'`;
+  const data = [user, password];
   connection.query(query, data, async (err, result) => {
     if (err) throw err;
     console.log("result :", result[0]);
     if (result.length) {
       if (await bcrypt.compare(password, result[0].password)) {
-        const { user_id, role_id, username, email, phone } = result[0];
+        const { user_id, role, username, email, phone, country } = result[0];
         const payload = {
           user_id,
-          role_id,
+          role,
           email: email,
           username,
           phone,
+          country,
         };
 
         const options = {

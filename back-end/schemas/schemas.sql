@@ -7,7 +7,7 @@ USE book_club;
 -----------------------------------
 CREATE TABLE roles (
     role_id INT UNIQUE NOT NULL AUTO_INCREMENT,
-    type VARCHAR(20) NOT NULL,
+    role VARCHAR(20) NOT NULL,
     PRIMARY KEY (role_id)
 );
 
@@ -16,15 +16,15 @@ CREATE TABLE roles (
 -----------------------------------
 CREATE TABLE users (
     user_id INT UNIQUE NOT NULL AUTO_INCREMENT,
-    role_id INT NOT NULL,
+    role VARCHAR(20) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
     phone INT (20)  NOT NULL,
     country VARCHAR (50) NOT NULL,
     created_time TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, username),
-    FOREIGN KEY (role_id) REFERENCES roles (role_id)
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (role) REFERENCES roles (role)
 );
 
 -----------------------------------
