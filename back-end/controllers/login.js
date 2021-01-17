@@ -3,10 +3,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const login = (req, res) => {
-  const query = `SELECT * FROM users WHERE email=?`;
+  const query = `SELECT * FROM users WHERE email=? OR username=?`;
 
-  const { email, password } = req.body;
-  const data = [email, password];
+  const { email, username, password } = req.body;
+  const data = [email, username, password];
   connection.query(query, data, async (err, result) => {
     if (err) throw err;
     console.log("result :", result[0]);
@@ -33,7 +33,7 @@ const login = (req, res) => {
       }
     } else {
       // res.status(404);
-      res.json("Invalid login check your email");
+      res.json("Invalid login check your email or username");
     }
   });
 };
