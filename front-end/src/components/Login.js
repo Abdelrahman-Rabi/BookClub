@@ -20,8 +20,8 @@ const Login = () => {
     axios
       .post("http://localhost:5000/login", values)
       .then((result) => {
-        if (!result.data.error) {
-          localStorage.setItem("token", result.data);
+        if (result.data.auth) {
+          localStorage.setItem("token", result.data.token);
         }
       })
       .catch((err) => {
