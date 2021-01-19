@@ -20,8 +20,7 @@ CREATE TABLE users (
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
-    phone INT (20)  NOT NULL,
-    country VARCHAR (50) NOT NULL,
+    displayName VARCHAR (50) NOT NULL,
     created_time TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id),
     FOREIGN KEY (role) REFERENCES roles (role)

@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 import axios from "axios";
+import UserContext from "../context/UserContext";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -7,26 +10,29 @@ const Login = () => {
     password: "",
   });
 
+  const [error, setError] = useState();
+  const { setUserData } = useContext(UserContext);
+  const history = useHistory();
+
   const handleChange = (e) => {
-    console.log(values);
     setValues({
       ...values,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/login", values)
-      .then((result) => {
-        if (result.data.auth) {
-          localStorage.setItem("token", result.data.token);
-        }
-      })
-      .catch((err) => {
-        console.log("ERR : ", err);
-      });
+    try {
+      const loginRes = await axios.post("http://localhost:5000/login", values);
+      const decoded = jwt_decode(loginRes.data.token);
+      console.log(loginRes.data.name);
+      setUserData({ token: loginRes.data.token, name: loginRes.data.name });
+      localStorage.setItem("auth-token", loginRes.data.token);
+      history.push("/");
+    } catch (err) {
+      err.response.data.msg && setError(err.response.data.msg);
+    }
   };
 
   return (
@@ -56,7 +62,7 @@ const Login = () => {
         ></input>
       </section>
       <br />
-      <button type="submit">Login</button>
+      <button type="submit">Sign in</button>
     </form>
   );
 };

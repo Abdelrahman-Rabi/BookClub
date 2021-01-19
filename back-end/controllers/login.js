@@ -7,18 +7,17 @@ const login = (req, res) => {
   const query = `SELECT * FROM users WHERE email='${user}' OR username='${user}'`;
   const data = [user, password];
   connection.query(query, data, async (err, result) => {
+    const userInfo = result[0];
     if (err) throw err;
-    console.log("result :", result[0]);
-    if (result.length) {
-      if (await bcrypt.compare(password, result[0].password)) {
-        const { user_id, role, username, email, phone, country } = result[0];
+    if (userInfo) {
+      if (await bcrypt.compare(password, userInfo.password)) {
+        const { user_id, role, username, email, displayName } = userInfo;
         const payload = {
           user_id,
           role,
           email: email,
           username,
-          phone,
-          country,
+          displayName,
         };
 
         const options = {
@@ -26,16 +25,14 @@ const login = (req, res) => {
         };
 
         const token = jwt.sign(payload, process.env.SECRET, options);
-        res.json({ auth: true, token: token });
+        res.json({ auth: true, token: token, name: userInfo.displayName });
       } else {
-        // res.status(422);
-        res.json({ auth: false, message: "Invalid login check your password" });
+        res.status(400).json({ auth: false, message: "Invalid credentials" });
       }
     } else {
-      // res.status(404);
-      res.json({
+      res.status(400).json({
         auth: false,
-        message: "Invalid login check your email or username",
+        message: "No account with this email/username has been registered.",
       });
     }
   });

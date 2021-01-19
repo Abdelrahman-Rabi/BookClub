@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import validate from "./handleErrorRegister";
+import UserContext from "../context/UserContext";
 
 const Register = (props) => {
   const [values, setValues] = useState({
+    displayName: "",
     username: "",
     email: "",
     password: "",
     password2: "",
-    phone: "",
-    country: "",
     role: "",
   });
-
+  const history = useHistory();
+  const { setUserData } = useContext(UserContext);
   const [errors, setErrors] = useState({});
+  const [error, setError] = useState();
 
   const handleChange = (e) => {
     setValues({
@@ -22,24 +25,50 @@ const Register = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors(validate(values));
     if (Object.keys(errors).length) {
       console.log("need more data");
     } else {
-      axios
-        .post("http://localhost:5000/register", values)
-        .then((result) => {})
-        .catch((err) => {
-          console.log("ERR : ", err);
+      try {
+        await axios
+          .post("http://localhost:5000/register", values)
+          .catch((err) => {
+            console.log("ERR : ", err);
+          });
+
+        const loginRes = await axios.post("http://localhost:5000/login", {
+          user: values.email,
+          password: values.password,
         });
+        setUserData({
+          token: loginRes.data.token,
+          name: loginRes.data.name,
+        });
+
+        localStorage.setItem("auth-token", loginRes.data.token);
+        history.push("/");
+      } catch (err) {
+        err.response.data.msg && setError(err.response.data.msg);
+      }
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="form">
       <h1>Register User</h1>
+      <section>
+        <label>Display Name</label>
+        <input
+          type="text"
+          name="displayName"
+          placeholder="enter your Display Name"
+          value={values.displayName}
+          onChange={handleChange}
+        ></input>
+        {/* {errors.username && <p className="input-error"> {errors.username} </p>} */}
+      </section>
       <section>
         <label>Username</label>
         <input
@@ -87,26 +116,6 @@ const Register = (props) => {
         )}
       </section>
       <section>
-        <label>Phone Number </label>
-        <input
-          type="text"
-          name="phone"
-          value={values.phone}
-          onChange={handleChange}
-        ></input>
-        {errors.phone && <p className="input-error"> {errors.phone} </p>}
-      </section>
-      <section>
-        <label>Country </label>
-        <input
-          type="text"
-          name="country"
-          value={values.country}
-          onChange={handleChange}
-        ></input>
-        {/* {errors.phone && <p className="input-error"> {errors.phone} </p>} */}
-      </section>
-      <section>
         <label>role </label>
         <input
           type="text"
@@ -114,9 +123,7 @@ const Register = (props) => {
           value={values.role}
           onChange={handleChange}
         ></input>
-        {/* {errors.phone && <p className="input-error"> {errors.phone} </p>} */}
       </section>
-
       <button type="submit" className="btn">
         Register
       </button>

@@ -23,9 +23,5 @@ export default function validation(values) {
     errors.password2 = "Passwords do not match";
   }
 
-  if (!values.phone.trim()) {
-    errors.phone = "Phone Number required";
-  }
-
   return errors;
 }
