@@ -11,3 +11,9 @@ header {
 nav button {
   margin: 0 1.5rem;
 }
+.book-array {
+  border: 2px rgba(155, 146, 146, 0.596) solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

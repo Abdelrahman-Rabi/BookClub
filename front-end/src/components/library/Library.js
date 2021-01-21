@@ -5,7 +5,6 @@ import GetBooks from "./GetBooks";
 const Library = () => {
   return (
     <div>
-      <h1>Our Library Here</h1>
       <GetBooks listName="Social Sciences" />
       <GetBooks listName="Fiction" />
       <GetBooks listName="Political Science" />

@@ -22,7 +22,7 @@ const BookCard = (props) => {
 
   return (
     <div>
-      {/* <Link
+      <Link
         to={{
           pathname: `/books/book-post/${props.book.id}`,
           state: { from: "library", bookData },
@@ -35,9 +35,9 @@ const BookCard = (props) => {
           height="200"
         />
       </Link>
-      <h3> {bookData.title}</h3> */}
-      {/* <h3>author :{bookData.authors}</h3>
-      <p>published :{bookData.publishedDate}</p> */}
+      <h3> {bookData.title}</h3>
+      <h3>author :{bookData.authors}</h3>
+      <p>published :{bookData.publishedDate}</p>
     </div>
   );
 };
