@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import Header from "./components/Header";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import BookPage from "./components/library/BookPage";
 
 const App = () => {
   const [userData, setUserData] = useState({
@@ -46,6 +47,7 @@ const App = () => {
             <Route exact path="/" component={Home} />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
+            <Route path="/book-page/:id" component={BookPage} />
           </Switch>
         </UserContext.Provider>
       </BrowserRouter>

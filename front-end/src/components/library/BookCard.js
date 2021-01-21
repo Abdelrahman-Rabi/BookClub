@@ -24,7 +24,7 @@ const BookCard = (props) => {
     <div>
       <Link
         to={{
-          pathname: `/books/book-post/${props.book.id}`,
+          pathname: `/book-page/${props.book.id}`,
           state: { from: "library", bookData },
         }}
       >
