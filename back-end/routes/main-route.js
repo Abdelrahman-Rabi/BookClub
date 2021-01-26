@@ -6,6 +6,8 @@ const {
   login,
   tokenIsValid,
   users,
+  addToList,
+  getUserList,
 } = require("../controllers/main-controller");
 
 mainRouter.get("/", (req, res) => {
@@ -16,5 +18,9 @@ mainRouter.post("/register", register);
 mainRouter.post("/login", login);
 mainRouter.post("/users/tokenisvalid", tokenIsValid);
 mainRouter.get("/users", auth, users);
+
+/** Book List  ****/
+mainRouter.post("/book-page/:book_id", auth, addToList);
+mainRouter.get("/book-list/:user_id", auth, getUserList);
 
 module.exports = mainRouter;

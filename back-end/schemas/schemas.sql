@@ -46,9 +46,8 @@ CREATE TABLE book_list
 (
   book_list_id INT UNIQUE NOT NULL AUTO_INCREMENT,
   user_id INT NOT NULL,
-  reading INT (25),
-  have_read INT (25),
-  to_read INT (25),
+  listName VARCHAR (15) NOT NULL,
+  book_id VARCHAR (30) NOT NULL,
   PRIMARY KEY (book_list_id),
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
