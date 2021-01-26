@@ -1,6 +1,6 @@
 const connection = require("../db");
 
-const addToList = async (req, res) => {
+const addToList = (req, res) => {
   const user_id = req.user.user_id;
   const book_id = req.params.book_id;
   const list = req.body.listName;
@@ -8,7 +8,6 @@ const addToList = async (req, res) => {
   const checkBook = `SELECT * FROM book_list WHERE user_id=${user_id} AND book_id='${book_id}'`;
   connection.query(checkBook, data, (err, result) => {
     if (result[0]) {
-      console.log("whyyyyy");
       const list_id = result[0].book_list_id;
       const data = [list_id, list];
       const updateList = `UPDATE book_list SET listName='${list}' WHERE book_list_id=${list_id}`;

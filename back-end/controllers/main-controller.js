@@ -4,6 +4,7 @@ const tokenIsValid = require("./tokenIsValid");
 const users = require("./users");
 const addToList = require("./addToList");
 const getUserList = require("./getUserList");
+const removeFromList = require("./removeFromList");
 
 module.exports = {
   register,
@@ -12,4 +13,5 @@ module.exports = {
   users,
   addToList,
   getUserList,
+  removeFromList,
 };

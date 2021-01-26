@@ -8,6 +8,7 @@ const {
   users,
   addToList,
   getUserList,
+  removeFromList,
 } = require("../controllers/main-controller");
 
 mainRouter.get("/", (req, res) => {
@@ -22,5 +23,6 @@ mainRouter.get("/users", auth, users);
 /** Book List  ****/
 mainRouter.post("/book-page/:book_id", auth, addToList);
 mainRouter.get("/book-list/:user_id", auth, getUserList);
+mainRouter.delete("/book-list/:user_id", auth, removeFromList);
 
 module.exports = mainRouter;
